@@ -910,3 +910,21 @@ Stage Summary:
 - নতুন স্থিতি: PUBLIC = SaifulHaqueNiloy/supremeai (showcase) + fork supremeai (বাধ্যতামূলক) + supremeai-open (সিদ্ধান্ত বাকি); PRIVATE = api/archive/core/infrastructure/mcp/sdk/studio (৭টি)
 - প্রকৃত main-এ এজেন্ট-অ্যাক্সেস আছে (App-installation) — ছোট কাজে সাহায্যের অফার দেওয়া হয়েছে; নির্দেশ ছাড়া স্পর্ষ নয়
 - পরবর্তী: ছোট কাজ শেষ হলে merge-unification (ADR-005) + supremeai-open-সিদ্ধান্ত + consolidation-পরিকল্পনা
+---
+Task ID: 33
+Agent: Z.ai Code (main session)
+Task: ব্যবহারকারীর টপোলজি v3 প্রস্তাব যাচাই — SaifulHaqueNiloy=প্রাইভেট আর্কাইভ-মিরর, paykaribazaronline=লাইভ combination; API-অডিট + ADR-005
+
+Work Log:
+- ব্যবহারকারীর সিদ্ধান্ত: দুটি সমান্তরাল main নয় — SaifulHaqueNiloy/supremeai full-project-synced **private আর্কাইভ**; paykaribazaronline-এ public-private combination + secrets pre-configured, যাতে অল্প correction-এ full live
+- App-token মেয়াদোত্তীর্ণ (401) → L-003 playbook: mint_token.py পুনর্মিন্ট (expires 2026-10-07T21:41Z); PAT জীবিত
+- Read-only API-অডিট (১১ এন্ডপয়েন্ট): parent public/non-fork/~40MB/18 খোলা issue/**Pages নেই**/pushed 20:34Z; **forks_count=1 (শুধু আমাদেরটাই)**; PAT parent-এ pull+**push**+triage, **admin ✗** (visibility-PATCH API-অসম্ভব); PAT fork-এ **admin ✓**; paykaribazaronline = **User অ্যাকাউন্ট** (org নয় → org-secrets নেই); fork-এর ৭ healed secret-নাম + ১৮ active workflow (upstream-sync id 375977882); archive-এ ADR-001…004
+- মূল-আবিষ্কার: parent private হলে GitHub public fork **detach** করে → fork স্বাধীন public রিপো → "fork private করা যায় না" সীমাবদ্ধতাই মুছে যায়; তৃতীয়-পক্ষ fork শূন্য বলে detach-এর পার্শ্ব-প্রভাব শূন্য
+- ADR-005 লেখা (আর্কাইভে): টপোলজি v3 — Decision ৬-বিন্দু, Consequences (one-way doors: star/fork-network, detach, minutes, issues-private), runbook Phase 0–D (best-of merge fork-এ → flip → fork-cutover → parent-Actions-off → secrets-অডিট); Task 32-র সংরক্ষিত "merge-unification ADR" পরিকল্পনা এতে শুষে নেওয়া (best-of গন্তব্য এখন fork)
+- README status-banner v3; sync_archive.sh push
+
+Stage Summary:
+- রায়: প্রস্তাবটি GitHub-সামঞ্জস্যপূর্ণ ✓ — combination ইতিমধ্যেই Task 32-তে বাস্তব (৪ public + ৭ private); বাকি কেবল parent-flip (UI/admin-PAT লাগবে) + cutover
+- নতুন secret-দরকার শূন্য: বিদ্যমান SYNC_PAT-এই parent-এ push-অধিকার প্রমাণিত → mirror-push সামলাবে
+- "olpo correction"-এর প্রকৃত তালিকা = মানব-নির্ভর ৩টি (Render app-access, provider-key rotation, প্রথম consumer-key) + register #23–26 ফাইন্ডিং
+- Execution pending explicit go — Phase 0–D এক সেশনে সম্পন্নযোগ্য; parent-কোনো কিছু এখনো স্পর্ষ করা হয়নি (read-only মাত্র)
