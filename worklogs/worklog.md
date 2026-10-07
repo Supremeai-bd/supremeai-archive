@@ -928,3 +928,23 @@ Stage Summary:
 - নতুন secret-দরকার শূন্য: বিদ্যমান SYNC_PAT-এই parent-এ push-অধিকার প্রমাণিত → mirror-push সামলাবে
 - "olpo correction"-এর প্রকৃত তালিকা = মানব-নির্ভর ৩টি (Render app-access, provider-key rotation, প্রথম consumer-key) + register #23–26 ফাইন্ডিং
 - Execution pending explicit go — Phase 0–D এক সেশনে সম্পন্নযোগ্য; parent-কোনো কিছু এখনো স্পর্ষ করা হয়নি (read-only মাত্র)
+---
+Task ID: 34
+Agent: Z.ai Code (main session)
+Task: GO-এক্সিকিউশন — টপোলজি v3 cutover (Phase 0+D সম্পন্ন), Infisical vault-ইনভেন্টরি, fork-এ ২৪ secret, ADR-006 নীতি
+
+Work Log:
+- ব্যবহারকারীর নির্দেশ: Infisical universal-auth credential-সহ "do everything we need to for go to live from our new paykaribazaronline" + দুটি কৌশল-প্রশ্ন (মাল্টি-রিপো এজেন্ট-রক্ষণা; browser/mcp-tower বিভাজন)
+- /tmp/inf.env (0600) সুরক্ষিত; vault-login → **prod-এ ২১৯ secret** ইনভেন্টরি (Render/Vercel/Upstash/Supabase/Stripe/Telegram/GitHub-App পূর্ণসেট; মান কখনো প্রিন্ট হয়নি)
+- PyNaCl ইনস্টল; merge-probe-এ re-measure: fork+20/parent+27 অপরিবর্তিত, conflict re-probe=**0**
+- **Phase 0 ✓**: fork main-protection=404 (অরক্ষিত) যাচাই; auto-sync workflow (375977882) পাঠ — নিজেই merge-upstream API ব্যবহার করে; সরাসরি `POST /merge-upstream` → **200 merge**; fork main 37d0596c→**14cff059**; parent-ahead 27→**0**; merge-CI: Main CI/CD ✓, Dependency Health ✓, Smart Deploy ✓
+- **Phase D ✓**: workflow-গ্রেপ ৫১টি distinct `secrets.X` → বিদ্যমান ৭-এর বাইরে ২৪টি vault-ম্যাচ fork-এ PUT (sealed-box, সব 201): RENDER×১১, VERCEL_TOKEN, CLOUDFLARE_ACCOUNT_ID/API_TOKEN, GROQ/GEMINI/OPENAI_API_KEY, BACKEND_URL, USER_BACKEND_URL, SUPABASE_DB_POOLER/WRITER, SELF_HEAL_PAT(←GITHUB_PAT_PAYKARIBAZARONLINE); fork secret 7→**31**; vault-বহির্ভূত তালিকা মানব-সিদ্ধান্তের জন্য নথিভুক্ত (DATABASE_URL, PRODUCTION_URL/STAGING_URL, QA_ADMIN/CUSTOMER×৫, FIREBASE_TOKEN, DEEPSEEK/OPENROUTER/ANTHROPIC ইত্যাদি)
+- **Phase A ✗→মানব**: PATCH parent private → **403** (PAT+App দুটোতেই admin-নেই) → UI-পথ হস্তান্তর (Settings → Danger Zone → Make private)
+- **credential-আবিষ্কার**: pay_pat-এ parent git-push 403 (fine-grained-স্কোপ-বহির্ভূত, API permissions বিভ্রামক); কিন্তু **App-installation token দিয়ে parent-push dry-run সফল** → post-flip mirror runtime-এ vault-এর AGENT_PLATFORM_APP_ID/PRIVATE_KEY থেকে স্বয়ং-মিন্ট করবে — মানব-PAT অপ্রয়োজনীয়
+- **ADR-005**-এ Execution-log অনুচ্ছেদ + স্ট্যাটাস হালনাগাদ; **ADR-006 (Proposed)** লেখা: বিভাজন-নীতি (≥২-শর্ত; browser=✓ প্রার্থী, mcp tower=বিদ্যমান রিপোতেই) + এজেন্ট-রক্ষণা ৫-স্তম্ভ (AGENTS.md, repo-registry, contracts-CI, archive-ledger bootstrap, identity-plane)
+
+Stage Summary:
+- **লাইভ-প্রস্তুতির রাজ্য**: fork = best-of-full-project (parent-ahead 0) + ৩১-secret পূর্ণ CI/CD-কভারেজ + সবুজ push-CI; একমাত্র অবশিষ্ট-কাঠামোগত ধাপ = parent-flip (মানব-UI এক ক্লিক) → তারপর Phase B/C (disable auto-sync + archive-mirror.yml + parent-Actions-off) — সব নকশা ADR-005-এ প্রস্তুত
+- "লাইভ-হওয়ার অল্প-সংশোধন" তালিকা: (ক) flip (কাঠামো) (খ) vault-বহির্ভূত secret-সিদ্ধান্ত (পরিবেশ-URL, QA-ক্রেডেনশিয়াল) (গ) register #23–26 উৎপাদন-ফাইন্ডিং (upstash কোটা P1 সর্বোচ্চ) (ঘ) মানব-নির্ভর ৩টি
+- কৌশল-উত্তর নথিভুক্ত: বিভাজন = নীতিভিত্তিক (শুধু duplicate-ভয়ে নয়); এজেন্ট-রক্ষণা = ৫-স্তম্ভে মাল্টি-রিপো স্কেলযোগ্য
+- শূন্য-secret শৃঙ্খলা অটুট: credential /tmp (0600)-তে, কোথাও প্রিন্ট/কমিট হয়নি
