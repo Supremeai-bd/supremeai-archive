@@ -1,7 +1,7 @@
 # ADR-005: টপোলজি v3 — SaifulHaqueNiloy = প্রাইভেট আর্কাইভ-মিরর; paykaribazaronline = লাইভ ফেডারেশন
 
 - তারিখ: 2026-10-08 (Asia/Dhaka)
-- স্ট্যাটাস: **Accepted (নকশা) — Execution ব্যবহারকারীর explicit go-র অপেক্ষায়**
+- স্ট্যাটাস: **Accepted — Execution চলমান (go প্রাপ্ত 2026-10-08): Phase 0 ✓ + Phase D ✓; Phase A/B/C parent-flip-অপেক্ষায়**
 - Supersedes: ADR-003-এর consolidation-গন্তব্য ("best-of → প্রকৃত main") ও ADR-004-এর টপোলজি-বর্ণনা; worklog Task 32-তে সংরক্ষিত "merge-unification (ADR-005)" পরিকল্পনা এই ADR-ই শুষে নিল — best-of merge-টি এখন fork-ই গন্তব্য
 
 ## Context
@@ -57,6 +57,14 @@
 - **Phase B — fork cutover:** workflow 375977882 disable (`PAT-admin ✓`); (ঐচ্ছিক) fork-এ `archive-mirror.yml` workflow — daily cron, SYNC_PAT দিয়ে parent main-এ merge-sync push, বার্তায় `[skip ci]`
 - **Phase C — parent-এ Actions disable + যাচাই:** UI-তে Settings → Actions → Disable (admin লাগবে)
 - **Phase D — secrets/live-readiness অডিট-চূড়ান্তকরণ:** fork-এর ৭-secret বেস + Infisical-vault কভারেজ তালিকা; উৎপাদন-ঘাটতি = বিদ্যমান মানব-নির্ভর ৩টি (Render app-access, provider-key rotation, প্রথম consumer-key) + register #23–26 ফাইন্ডিং — এগুলিই "olpo correction"-এর প্রকৃত তালিকা
+
+## Execution log (2026-10-08, go-প্রাপ্তির দিন)
+
+- **Phase 0 ✓** — `POST /repos/paykaribazaronline/supremeai/merge-upstream` → 200, merge_type=merge; fork main `37d0596c` → `14cff059`; parent-ahead 27→**0** (সব parent-কমিট fork-এ); probe-যাচাই conflict=0; পরবর্তী CI: Main CI/CD ✓, Dependency Health ✓, Smart Deploy ✓ (PR-Gate action_required = PR-ইভেন্টের স্বাভাবিক অপেক্ষা, push-সংশ্লিষ্ট নয়)
+- **Phase D ✓** — workflow-রেফারেন্স-গ্রেপ: ৫১টি distinct `secrets.X`; বিদ্যমান ৭-এর বাইরে **২৪টি নতুন secret vault(prod, ২১৯ keys)→fork ভরাট** (sealed-box, সব 201): RENDER×১১, VERCEL_TOKEN, CLOUDFLARE×২, GROQ/GEMINI/OPENAI, BACKEND_URL/USER_BACKEND_URL, SUPABASE_DB_POOLER/WRITER, SELF_HEAL_PAT(←GITHUB_PAT_PAYKARIBAZARONLINE); fork secret-count 7→**31**; vault-বহির্ভূত (মানব-সিদ্ধান্ত অবশিষ্ট): DATABASE_URL, DB_SCHEMA_CHECK_URL, PRODUCTION_URL/STAGING_URL, PROD_BACKEND, MCP_PRODUCTION_URL, FRONTEND/EDGE/WORKER_PRODUCTION_URL, SUPREMEAI_BASE_URL, MISSION_CONTROL_DATABASE_URL, FIREBASE_TOKEN/FIREBASE_PROJECT_ID, QA_ADMIN/CUSTOMER×৫, DEEPSEEK/OPENROUTER/ANTHROPIC_API_KEY
+- **Phase A ✗→ব্যবহারকারী** — `PATCH private:true` → **403** (PAT admin-নেই, প্রমাণিত; App-token-ও admin-নেই) → UI-পথ: parent Settings → Danger Zone → Change visibility → **Make private**
+- **মিরর-ক্রেডেনশিয়াল প্রমাণ** — pay_pat-এ parent git-push **403** (API permissions push:true থাকলেও fine-grained-স্কোপ-বহির্ভূত); কিন্তু **App-installation token (supremeai-3rd-party-platform, SaifulHaqueNiloy-এ ইনস্টলড) দিয়ে parent-push dry-run সফল** → post-flip archive-mirror workflow runtime-এ vault-এর AGENT_PLATFORM_APP_ID/PRIVATE_KEY থেকে স্বয়ং-মিন্ট করবে — মানব-PAT অপ্রয়োজনীয়
+- **Phase B/C (post-flip, পরবর্তী সেশনে)** — ① workflow 375977882 disable ② fork-এ archive-mirror.yml যোগ (daily cron, App-token মিন্ট-স্টেপ, fork main → parent main, বার্তায় `[skip ci]`) ③ parent-এ Actions disable (UI, admin)
 
 ## পূর্বসূরি-নোট
 
