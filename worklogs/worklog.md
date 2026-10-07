@@ -892,3 +892,21 @@ Stage Summary:
 - টপোলজি চূড়ান্ত ও প্রমাণবদ্ধ: SaifulHaqueNiloy/supremeai = প্রকৃত main (public, সক্রিয়); paykaribazaronline/* = test federation
 - App-installation প্রকৃত main-এও বিদ্যমান → সেখানে এজেন্ট-কাজ সম্ভব, তবে ব্যবহারকারীর স্পষ্ট নির্দেশ ছাড়া স্পর্ষ করা হবে না
 - consolidation-দিক: test-এর সেরা → প্রকৃত main; কিছুই বাদ নয় (ADR-003 + ADR-004)
+---
+Task ID: 32
+Agent: Z.ai Code (main session)
+Task: Public-showcase + private-test-federation পরিকল্পনা — survey, মূল্যায়ন, আংশিক বাস্তবায়ন
+
+Work Log:
+- ব্যবহারকারীর সিকোয়েন্স: প্রকৃত main (SaifulHaqueNiloy/supremeai)-এর ছোট কাজগুলো আগে শেষ হোক, তারপর পরিকল্পনা → merge-প্রস্তাব মুলতবি (০-conflict বিশ্লেষণ স্টেজড: /home/z/merge-work, ২০ fork-কমিট + ২৭ upstream-কমিট, conflict শূন্য)
+- ব্যবহারকারীর প্রস্তাব: প্রকৃত main public-ই থাকবে (fully-configured showcase); paykaribazaronline-এর বাকি সব private
+- Survey (API, ২০২৬-১০-০৭): ১০ রিপো — পূর্বেই private: api/archive/core/infrastructure/mcp-control-plane; public: paykaribazar, fork supremeai, open, sdk, studio
+- বাস্তবায়ন: supremeai-sdk + supremeai-studio → PRIVATE (PATCH 200, reversible) — প্রস্তাবের নির্দ্বিধায়-সম্মত অংশ
+- পতাকা-১ (fork supremeai): GitHub-নিয়ম — public-repo-র fork private করা যায় না; ঝুঁকি-মূল্যায়ন শূন্য (বিষয়বস্তু = ইতিমধ্যে-public real-main-এর মিরর + আমাদের docs-কমিট; secret ফাইলে নেই, settings-এ লুকানো); ৬-ঘণ্টা auto-sync বাঁচাতে পাবলিকই রাখা হলো; detach চাইলে human-step (GitHub Support) → তখন private সম্ভব
+- পতাকা-২ (supremeai-open): Task 25–29-এ ইচ্ছাকৃত public দরজা হিসেবে নির্মিত (MIT, gateway-spec + client-kit + CONSUMERS) — private করা হয়নি; ব্যবহারকারীর সিদ্ধান্ত বাকি: (ক) দ্বিতীয় public দরজা (সুপারিশ — roadmap Phase 8-এর উদ্দেশ্য বাঁচে) (খ) single-face নীতি → private + বিষয়বস্তু consolidation-এ real main-এর docs-এ ভাঁজ
+- স্কোপ-বাহির: paykaribazar (ব্যবসা-রিপো), SaifulHaqueNiloy/DolilBook — স্পর্ষ নয়
+
+Stage Summary:
+- নতুন স্থিতি: PUBLIC = SaifulHaqueNiloy/supremeai (showcase) + fork supremeai (বাধ্যতামূলক) + supremeai-open (সিদ্ধান্ত বাকি); PRIVATE = api/archive/core/infrastructure/mcp/sdk/studio (৭টি)
+- প্রকৃত main-এ এজেন্ট-অ্যাক্সেস আছে (App-installation) — ছোট কাজে সাহায্যের অফার দেওয়া হয়েছে; নির্দেশ ছাড়া স্পর্ষ নয়
+- পরবর্তী: ছোট কাজ শেষ হলে merge-unification (ADR-005) + supremeai-open-সিদ্ধান্ত + consolidation-পরিকল্পনা
