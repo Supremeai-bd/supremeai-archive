@@ -5,9 +5,10 @@
 
 ## বর্তমান অবস্থা (Status banner)
 
-- **Main repo (`paykaribazaronline/supremeai` fork) সম্পূর্ণ হিমশীতল** — ADR-003 দেখুন। কোনো PR/commit/issue-mutation হবে না।
-- চলমান কাজ: অন্য ফেডারেশন-রিপো (sdk / studio / mcp-control-plane / infrastructure / supremeai-api / supremeai-open)।
-- ভবিষ্যৎ: main + second রিপোর **best-of consolidation** — কিছুই বাদ যাবে না, শুধু প্রতিটি জিনিসের ভালোটা adopt হবে।
+- **প্রকৃত main repo = `SaifulHaqueNiloy/supremeai`** — বাস্তব উন্নয়ন এখানে (ADR-004)।
+- **`paykaribazaronline`-এর সব রিপো = পরীক্ষার মাঠ (test federation)** — "সব ঠিক আছে কি না" যাচাই-উদ্দেশ্যে।
+- **Test-federation main (fork `paykaribazaronline/supremeai`) হিমশীতল** — ADR-003; কোনো PR/commit/issue-mutation নয়।
+- ভবিষ্যৎ: test-federation-এর **best-of consolidation → প্রকৃত main** — কিছুই বাদ যাবে না, শুধু ভালোটা adopt হবে।
 
 ## কেন এই রিপো (Why)
 

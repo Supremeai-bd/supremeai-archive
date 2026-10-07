@@ -875,3 +875,20 @@ Stage Summary:
 - স্থায়ী খাতা চালু: "কিছুই হারাবে না" এখন গ্যারান্টিড — worklog/ADR/snapshot/lessons সব GitHub-এ
 - পরিবর্তিত বোর্ড: fork-সংশ্লিষ্ট সব কাজ ⏸️; চলবে শুধু অ-মেইন-রিপো (infra/sdk/studio/mcp/supremeai-api/supremeai-open); Tier 3 স্থগিত (ADR-002 অটুট)
 - consolidation প্রস্তুতি-নোট: main repo-র সেরা-অংশ তালিকা = roadmap §41-annotation (PR#31), federation-চুক্তি ডক, deep-audit রেজিস্টার #23–26, স্থায়ী-শিক্ষা L-001…L-011
+---
+Task ID: 31
+Agent: Z.ai Code (main session)
+Task: Federation topology স্পষ্টীকরণ নথিভুক্তকরণ (ADR-004) + sandbox-reset পুনরুদ্ধার
+
+Work Log:
+- ব্যবহারকারীর ব্যাখ্যা: প্রকৃত main = SaifulHaqueNiloy/supremeai ("আমাদের বাকি সব এই রিপোতে; আমি এখন main হিসেবে এখানেই কাজ করছি"); paykaribazaronline-এর একাধিক রিপো = পরীক্ষার মাঠ ("সব ঠিক আছে কিনা যাচাই")
+- Sandbox reset ঘটেছে (/tmp-token+clone গেস্ট) → L-003 playbook কাজে: mint_token.py → App-token (SaifulHaqueNiloy installation, slug supremeai-3rd-party-platform); vault→GITHUB_PAT_PAYKARIBAZARONLINE (len 93, যাচাই: login paykaribazaronline); askpass পুনর্নির্মাণ; archive re-clone — সব কিছু GitHub থেকে পুরোপুরি ফিরেছে (পুনরুদ্ধার-লুপ প্রথমবার বাস্তবে প্রমাণিত)
+- API-প্রমাণ: fork.parent = SaifulHaqueNiloy/supremeai (CONFIRMED, source-ও একই); প্রকৃত main public/non-fork/main-branch/pushed 2026-10-07 (d4c1cea3, #4176 সিরিজ); archive 200-জীবিত
+- আবিষ্কার: /home/z/my-project/supremeai = প্রকৃত main-এর লোকাল ক্লোন, কিন্তু 4156 dirty ফাইলযুক্ত সক্রিয় কার্যক্ষেত্র → এজেন্ট স্পর্ষ করেনি (ff-only নিরাপদে বাতিল)
+- ADR-004 লেখা: ADR-003-এর "second repo = supremeai-api (অনুমান)" সংশোধন → গন্তব্য SaifulHaqueNiloy/supremeai; পরিভাষা-চুক্তি (test-federation main বনাম প্রকৃত main)
+- README status-banner হালনাগাদ; sync_archive.sh auto re-clone + push সফল
+
+Stage Summary:
+- টপোলজি চূড়ান্ত ও প্রমাণবদ্ধ: SaifulHaqueNiloy/supremeai = প্রকৃত main (public, সক্রিয়); paykaribazaronline/* = test federation
+- App-installation প্রকৃত main-এও বিদ্যমান → সেখানে এজেন্ট-কাজ সম্ভব, তবে ব্যবহারকারীর স্পষ্ট নির্দেশ ছাড়া স্পর্ষ করা হবে না
+- consolidation-দিক: test-এর সেরা → প্রকৃত main; কিছুই বাদ নয় (ADR-003 + ADR-004)
