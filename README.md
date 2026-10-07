@@ -3,12 +3,13 @@
 > **একমাত্র উদ্দেশ্য:** গুরুত্বপূর্ণ পরিকল্পনা, সিদ্ধান্ত ও কাজের ইতিহাস কখনো হারাবে না।
 > Purpose: append-only ledger of worklogs, decisions (ADR), roadmap snapshots and lessons for the SupremeAI federation.
 
-## বর্তমান অবস্থা (Status banner)
+## বর্তমান অবস্থা (Status banner — v3, ADR-005)
 
-- **প্রকৃত main repo = `SaifulHaqueNiloy/supremeai`** — বাস্তব উন্নয়ন এখানে (ADR-004)।
-- **`paykaribazaronline`-এর সব রিপো = পরীক্ষার মাঠ (test federation)** — "সব ঠিক আছে কি না" যাচাই-উদ্দেশ্যে।
-- **Test-federation main (fork `paykaribazaronline/supremeai`) হিমশীতল** — ADR-003; কোনো PR/commit/issue-mutation নয়।
-- ভবিষ্যৎ: test-federation-এর **best-of consolidation → প্রকৃত main** — কিছুই বাদ যাবে না, শুধু ভালোটা adopt হবে।
+- **লাইভ main = fork `paykaribazaronline/supremeai`** (public) — এখানেই চলমান জীবন; "olpo correction → full live" লক্ষ্যের একমাত্র ঠিকানা।
+- **`SaifulHaqueNiloy/supremeai` = প্রাইভেট আর্কাইভ-মিরর** (ADR-005: public→private রূপান্তর pending explicit go) — full project-এর সাথে synced, receive-only।
+- **`paykaribazaronline` = public-private combination** — PUBLIC: supremeai(fork), supremeai-open, paykaribazar; PRIVATE: api, archive, core, infrastructure, mcp-control-plane, sdk, studio।
+- **Secrets pre-configured** — fork-এ healed ৭-secret বেস (Infisical+Supabase+SYNC_PAT); নতুন secret-প্রয়োজন ন্যূনতম (SYNC_PAT-ই mirror-push সামলাবে)।
+- Sync-দিক (cutover-পরে): fork → parent (daily merge-mirror, `[skip ci]`); parent-এ Actions disable।
 
 ## কেন এই রিপো (Why)
 
