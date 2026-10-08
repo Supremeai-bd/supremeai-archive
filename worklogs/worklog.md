@@ -948,3 +948,26 @@ Stage Summary:
 - "লাইভ-হওয়ার অল্প-সংশোধন" তালিকা: (ক) flip (কাঠামো) (খ) vault-বহির্ভূত secret-সিদ্ধান্ত (পরিবেশ-URL, QA-ক্রেডেনশিয়াল) (গ) register #23–26 উৎপাদন-ফাইন্ডিং (upstash কোটা P1 সর্বোচ্চ) (ঘ) মানব-নির্ভর ৩টি
 - কৌশল-উত্তর নথিভুক্ত: বিভাজন = নীতিভিত্তিক (শুধু duplicate-ভয়ে নয়); এজেন্ট-রক্ষণা = ৫-স্তম্ভে মাল্টি-রিপো স্কেলযোগ্য
 - শূন্য-secret শৃঙ্খলা অটুট: credential /tmp (0600)-তে, কোথাও প্রিন্ট/কমিট হয়নি
+
+---
+Task ID: 35
+Agent: Z.ai Code (main session)
+Task: paykaribazaronline-এর সব supremeai-রিপো MCP tower-এ সংযোগ — vault-কী ইনজেকশন + লাইভ-ডিপ্লয় (user-প্রশ্ন: "সব রিপো কি tower-এ connected? না হলে Infisical vault থেকে key নিয়ে MCP server-এ যোগ করো")
+
+Work Log:
+- Tower-connection-model ম্যাপ: connection = `account.registry.ts`-entry (apiKeyRef + repo-URL) → github.* tools accountId-প্যারাম; Infisical adapter-এ `pullSecretsIntoProcessEnv()` বুটে কল হয় (index.ts:1665)
+- **প্রোব-প্রমাণ (Render API, RENDER_API_KEY_4 দিয়ে)**: লাইভ tower `supremeai-mcp-tower` (srv-dabm7inqj5pc738jkrt0) deploy-উৎস = **SaifulHaqueNiloy/supremeai main, rootDir=infrastructure/mcp-control-plane, autoDeploy=yes**; সার্ভিসের ১০০ env-var-এর মধ্যে **INFISICAL_*/GH_*/GITHUB_* সবই অনুপস্থিত** → vault auto-load নীরবে skip, GitHub-অ্যাকাউন্ট দুটিই available:false → উত্তর: **সংযোগ ছিল না (fork বাদে ৮টি রিপো অদৃশ্য, রানটাইম-কীও ছিল শূন্য)**
+- Vault-ইনভেন্টরি (L-003 playbook, sandbox-reset-পরবর্তী পুনর্মিন্ট): 219 prod secret; GitHub-সংশ্লিষ্ট = GITHUB_PAT_PAYKARIBAZARONLINE(93), GITHUB_TOKEN, GITHUB_APP_*, AGENT_PLATFORM_* — মান কখনো প্রিন্ট হয়নি; paykaribazaronline-এ ১০ repo নিশ্চিত
+- **Render env-ইনজেকশন (5×PUT 200)**: INFISICAL_CLIENT_ID/SECRET/PROJECT_ID/ENVIRONMENT + GITHUB_PAT_PAYKARIBAZARONLINE — Render API-র সঠিক body = `{"value": v}` (প্রোব-প্রমাণিত; `{"envVar":{}}` → 400)
+- **কোড-পরিবর্তন (২ ফাইল, additive)**: account.registry-তে ৮টি নতুন `github-pay-supremeai-{api,archive,core,infrastructure,mcp-control-plane,open,sdk,studio}` অ্যাকাউন্ট (apiKeyRef=GITHUB_PAT_PAYKARIBAZARONLINE) + github-adapter ফলব্যাক-চেইনে PAT; tsc before-vs-after ডেল্টা=শূন্য
+- **পুশ-পথ**: mcp ডেডিকেটেড-রিপোতে সরাসরি (092d1e1) ✓; parent-এ main **protected** ("protected branch hook declined") → PR-পথ
+- **গভর্নেন্স-গেট শিক্ষা-চক্র (প্রতিটি guard বাস্তবে ধরল)**: ①branch-creation-guard (#2907) issue-ছাড়া ব্রাঞ্চ delete করল ②issue template-অসম্পূর্ণ → PATCH (title `type(scope):` + Mission/Touching Files/Verification + P1-high) ③branch-naming-gate: `supremeai-3rd-party-platform-...` অবৈধ → `platform-4235-...` লেন ④scope-gate: claim-কমেন্টে `Touching files:` (কোলন-মার্কার) লাগে → নতুন claim-কমেন্ট + gate re-run ⑤auto-sync-pr-branches বট নিজেই ব্রাঞ্চে main merge করে
+- **PR #4238 merge ✓** (adc04eaf) — সব গেট সবুজ; issue #4235 + Atomic Claim (identity: `supremeai-3rd-party-platform`); পুরনো PR #4236 ব্যাখ্যাসহ বন্ধ
+- **লাইভ-ভেরিফিকেশন**: Render deploy dep-db3eu8eq1p3s73f5 → **live** (commit adc04eaf); বুট-লগে **`[Infisical] Successfully injected 43 secrets from Infisical vault.`** (আগে 0) + **`[task-registry] GitHub sync ok — +18 added`** (GitHub-token রানটাইমে কার্যকর); /health 200 ok
+- fork secret-কভারেজ পুনঃযাচাই: ৩১টি অক্ষত (INFISICAL_*/SELF_HEAL_PAT/SYNC_PAT উপস্থিত); fork auto-sync (৬ঘণ্টা) parent-এর পরিবর্তন নেবে
+
+Stage Summary:
+- **উত্তর (user-প্রশ্ন)**: আগে সংযোগ ছিল না — registry-তে মাত্র ২ GitHub-অ্যাকাউন্ট (parent+fork) আর রানটাইমে কোনো কী-ই ছিল না; **এখন ১০/১০ supremeai-রিপো tower-এ (parent+fork+৮ pay-repo), রানটাইমে vault থেকে ৪৩ secret + PAT লোড, লাইভ-ডিপ্লয় সম্পন্ন**
+- নতুন শৃঙ্খলা-শিক্ষা (L-012 প্রার্থী): parent main-এ এজেন্ট-কাজ = Atomic Claim → template-compliant issue → `<lane>-<issue>-<slug>` ব্রাঞ্চ → claim-কমেন্টে `Touching files:` → PR → গেট-সবুজ → merge; শর্টকাট কোনোটাই সম্ভব নয় (guard-প্রমাণিত)
+- Render API-key ঘূর্ণন-প্যাটার্ন লক্ষ: vault-এর RENDER_API_KEY_4 সক্রিয় ঘূর্ণনের শিকার — প্রতি-ব্যবহারে fresh vault-pull দরকার (logs-API-র সঠিক প্যারাম: ownerId+resource+type=app)
+- বাকি: fork-এ auto-sync-এর মাধ্যমে এই কমিট ছড়াবে (≤৬ঘণ্টা); Phase A-flip (মানব-UI) পেন্ডিং থাকলেও tower এখন থেকেই paykaribazaronline-ফেডারেশন পর্যবেক্ষণ-সক্ষম
