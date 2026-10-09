@@ -1,6 +1,6 @@
 # ADR-007 — টপোলজি v4: Open-Core Private-Live (v3 cutover-এর উপরে ভেরিয়েন্ট-সিদ্ধান্ত)
 
-**Status:** Accepted (ব্যবহারকারীর চূড়ান্ত সিদ্ধান্ত, 2026-10-09)
+**Status:** EXECUTED (2026-10-09) — fork private+detached ✓, diet লাইভ main-এ (cron 0 2,8,14,20) ✓, Agent Loop ফিক্স-পরে SUCCESS ✓, archive-mirror প্রতিদিন ৪× parent-এ ff-push ✓, gitleaks শূন্য-আসল-লিক ✓; অবশিষ্ট মানব-ক্লিক: key-rotation (৪×403) + App-install paykaribazaronline-এ + Render re-point
 **তারিখ:** 2026-10-09 (Asia/Dhaka)
 **উপরে-নির্মিত:** ADR-005 (টপোলজি v3 cutover), ADR-006 (বিভাজন-নীতি), Task 36–38 নিরীক্ষা-প্রমাণ
 

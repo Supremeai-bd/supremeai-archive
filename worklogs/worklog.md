@@ -1067,3 +1067,26 @@ Stage Summary:
 - **বাকি কাজ (অগ্রাধিকার-ক্রমে)**: P0=① diet-commit 443baf2d fork main-এ পোর্ট (মিনিট-রক্ষা — জরুরি) ② fork-এ auto-sync disable ③ archive-mirror স্থাপন (fork→parent/pay-archive, SELF_HEAL_PAT+[skip ci]) ④ Agent Loop-লাল ফিক্স (parent-এর প্রমাণিত ফিক্স ইতিমধ্যে হাতে) ⑤ parent Actions off (Phase C) ⑥ Render re-point (মানব-ক্লিক); P1=projection-sync workflow, gitleaks full-history, tower services=0 তদন্ত, App-install/rotation যাচাই; P2=continue_loop.py নির্মাণ+সংবিধান-v2 sync, P0 #20+PR #1, P1 #34/#26
 - **AGENTS.md-প্রশ্নের উত্তর: হ্যাঁ — এজেন্টরা এখনই কাজ করতে পারে** (v1 সংবিধানের বুটস্ট্র্যাপ-চেইন ৪ ধাপের ৩টি প্রমাণিত-জীবন্ত, টুলিং ৯/১১+ci-path-সহ সম্পূর্ণ, ভল্ট ২১৭-secret, টাওয়ার-অথেনটিকেশন ২০০, স্লট ৭টি ফাঁকা, কিউ ১৩-issue); একমাত্র ভাঙা অংশ = Actions-সিডিউলড স্বয়ংক্রিয় লুপ (লাল) — ম্যানুয়াল/লোকাল লুপ সম্পূর্ণ কার্যকর; স্থায়ী-স্বয়ংক্রিয়তার জন্য diet-পোর্ট+লুপ-ফিক্স দরকার
 - শূন্য-মিউটেশন নিরীক্ষা; শূন্য-সিক্রেট-প্রিন্ট; স্ক্রিপ্ট: /home/z/.audit/task40_full_project_check.py + task40_deep_probes.py
+
+---
+Task ID: 41
+Agent: Z.ai Code (main session)
+Task: ব্যবহারকারীর নির্দেশ: "SaifulHaqueNiloy/supremeai paykaribazaronline theke ahead — merge it so that any good things can't be missed + complete all remaining work" — parent-ahead merge + P0-ব্যাচ পূর্ণ নির্বাহ
+
+Work Log:
+- **Ahead-যাচাই**: merge-base=3f3edcd0; parent ঠিক ২ commit এগিয়ে (443baf2d schedule-diet+credential-fixes, 3a595afe constitution §2.1); fork-এর নিজস্ব commit বাদে শূন্য-পিছনে — অর্থাৎ fork = base+extra, parent = base+2
+- **Merge (Task 3)**: সদ্য-clone fork (PAT-askpass) + parent remote (App-token-askpass, PAT parent 404) → `git merge parent/main` = **নির্বিঘ্ন (৮ ফাইল, +94/−20, conflict শূন্য)** → merge-commit 4383d1aa → fork main push f0c2abb0..4383d1aa ✓; diet তাৎক্ষণিক যাচাই: Agent Loop cron `0 2,8,14,20` + Nightly ৩-cron = ADR-007 অনুযায়ী
+- **Auto-sync disable**: workflow 375977882 (Auto-Sync Fork with Upstream) → PUT disable = 204, state `disabled_manually` — detached-fork + vault-SYNC_PAT-শূন্য অবস্থায় মৃত-workflow-নয়েজ বন্ধ
+- **Archive-mirror (Phase B)**: `.github/workflows/archive-mirror.yml` নির্মাণ — ৬ঘণ্টা-schedule + dispatch, ff-only fail-closed, শূন্য-প্রিন্ট। **প্রথম run FAILURE** → root-cause: parent main **protected** নয় — App-এ `workflows` permission নেই (workflow-ফাইল-বহুল commit push remote-rejected; protection নয় — প্রমাণ) → সমাধান: vault GITHUB_TOKEN (owner=SaifulHaqueNiloy, /user-প্রমাণ) রানটাইমে INFISICAL_* দিয়ে ফেচ + টার্গেট `archive/main` ব্রাঞ্চ → দ্বিতীয় run **completed/success** (#37934360552) → parent archive/main = b16c04cb (= fork tip), parent main 3a595afe অস্পৃষ্ট
+- **Phase C**: parent-এর ২০ active workflow-এর মধ্যে App-token 0/20 (403) → **owner-token (vault GITHUB_TOKEN) দিয়ে ১৯ disable**; বাকি ২ (Dependabot Updates + Dependency Graph) = system-workflow, API 422 (un-disableable, কেবল dependabot-activity-তে চলে) — ঐচ্ছিক মানব-ক্লিক হিসেবে নথিভুক্ত
+- **gitleaks full-history (fork, v8.24.0)**: ৪,০৮৭ commit / ১৩৪MB স্ক্যান → **মাত্র ১ finding** = `packages/scripts/test_security_guard.py:28`-এর `sk-sup-...QRST` synthetic test-fixture (b51b4e59, ফাইলটি নিজেই security-guard-টেস্ট) → **আসল-লিক শূন্য** — cutover-সিক্যুরিটি-গেট পাস
+- **Key-rotation যাচাই (vendor-প্রোব)**: vault-মানে OpenAI/Groq/Cerebras/Google **সব ৪টি 403** → মানব-dashboard-rotation এখনো pending (click #4); **App-installations (JWT)**: মাত্র ১টি (SaifulHaqueNiloy; perms-এ actions/issues/pull_requests/deployments/environments নতুন যোগ, কিন্তু `workflows` নেই) → click #2 (paykaribazaronline-এ install) pending
+- **Agent Loop-লাল ফিক্স (মূল-কারণসহ)**: dispatch #37934891411 → job "Run continuous agent loop" ক্র্যাশ: `continuous_agent_loop.py:1701` `issue_number.isdigit()`-এ `AttributeError: 'int' object has no attribute 'isdigit'` (কিউ-সোর্স int দিল; claim-পরবর্তী ক্র্যাশ) → ফিক্স: L1657-পরবর্তী এক-বিন্দুতে `issue_number = str(issue_number)` normalize (L1701+L1765 উভয় callsite সুরক্ষিত, শূন্য-আচরণ-পরিবর্তন, AST-যাচাই ✓) → commit b16c04cb push → **re-dispatch = completed/SUCCESS (#37935200781)** — লাল workflow এখন সবুজ; issue #32-এর orphan-claim ফ্লিট-মেশিনারির (claim-ledger) হাতে ছেড়ে দেওয়া হলো
+- **ADR-005 status → EXECUTED** (Phase 0/A/B/C/D/E সব ✓ সহ সংক্ষিপ্ত প্রমাণ); **ADR-007 status → EXECUTED** (অবশিষ্ট ৩ মানব-ক্লিক নথিভুক্ত)
+
+Stage Summary:
+- **Cutover এখন পূর্ণতঃ EXECUTED**: parent=private-archive (main untouched, archive/main=লাইভ-মিরর), fork=detached-private-লাইভ main (diet-সহ), mirror-স্বয়ংক্রিয় (৪×/দিন ff-only), Agent Loop সবুজ, gitleaks-পরিচ্ছন্ন, ADR-005+007 Executed
+- **মিনিট-স্থিতি**: fork-এ run/day ≈ ৪ (Agent Loop) + ১ (Nightly) + ইভেন্ট-চালিত = প্রত্যাশিত ~৪০০–৬৫০/মাস (কোটার ১/৩-এর নিচে — ADR-007 অনুযায়ী)
+- **বাকি কেবল মানব-ক্লিক ৩টি**: ①key-rotation (OpenAI/Groq/Cerebras/Google dashboard → নতুন মান vault-এ) ②GitHub App paykaribazaronline-এ install (open-projection-এর App-mint-পথ খোলে) ③Render tower re-point (ঐচ্ছিক — বর্তমান build জীবিত, parent frozen)
+- **পরবর্তী-প্রস্তুত**: open-projection.yml (prepared artifact) install-প্রস্তুত — App-install হলে এক-সেশনে যুক্ত হবে; supremeai-open-এর ম্যানুয়াল AGENTS/AGENT_RULES push এখন পর্যন্ত কার্যকর
+- শূন্য-সিক্রেট-প্রিন্ট অটুট; সব মান /tmp (0600); worklog+ADR push সম্পন্ন

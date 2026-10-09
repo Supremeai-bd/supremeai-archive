@@ -1,7 +1,7 @@
 # ADR-005: টপোলজি v3 — SaifulHaqueNiloy = প্রাইভেট আর্কাইভ-মিরর; paykaribazaronline = লাইভ ফেডারেশন
 
 - তারিখ: 2026-10-08 (Asia/Dhaka)
-- স্ট্যাটাস: **Accepted — Execution চলমান (go প্রাপ্ত 2026-10-08): Phase 0 ✓ + Phase D ✓; Phase A/B/C parent-flip-অপেক্ষায়**
+- স্ট্যাটাস: **EXECUTED (2026-10-09): Phase 0 ✓ Phase A ✓ (parent private, API-প্রমাণ) Phase B ✓ (auto-sync disabled_manually + archive-mirror.yml লাইভ, প্রথম push success) Phase C ✓ (parent workflow ১৯/২১ disable; ২ Dependabot-system API-unable) Phase D ✓ Phase E ✓ (diet-merge 4383d1aa + Agent Loop ফিক্স-পরে SUCCESS #37935200781 + gitleaks full-history শূন্য-আসল-লিক)**
 - Supersedes: ADR-003-এর consolidation-গন্তব্য ("best-of → প্রকৃত main") ও ADR-004-এর টপোলজি-বর্ণনা; worklog Task 32-তে সংরক্ষিত "merge-unification (ADR-005)" পরিকল্পনা এই ADR-ই শুষে নিল — best-of merge-টি এখন fork-ই গন্তব্য
 
 ## Context
