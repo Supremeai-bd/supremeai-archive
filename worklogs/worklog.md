@@ -993,3 +993,22 @@ Stage Summary:
 - **৩টি মানব-ক্লিক বাকি** (কোনো token-এ সাধ্য নেই): ①parent-flip private (Settings→Danger Zone) ②GitHub App দ্বিতীয় অ্যাকাউন্টে install ③Render GitHub App-কে paykaribazaronline/supremeai-অ্যাক্সেস + সার্ভিস-উৎস re-point
 - ক্লিক-পরবর্তী আমার স্বয়ংক্রিয়-অংশ (Phase B/C): auto-sync disable → archive-mirror.yml (SELF_HEAL_PAT, [skip ci]) → parent-Actions off → চূড়ান্ত secret-অডিট → ADR-005 status=Executed
 - পরবর্তী-সংশোধনী তালিকা: Continuous Agent Loop লাল (উভয় অ্যাকাউন্টে, উত্তরাধিকারী)
+
+---
+Task ID: 37
+Agent: Z.ai Code (main session)
+Task: ব্যবহারকারী ফরওয়ার্ড-করা দুটি প্রস্তাব যাচাই — (১) Open-Core/হাইব্রিড মডেল + fork-সাইজ-ব্যাখ্যা (২) দুই-অ্যাকাউন্ট Actions-মিনিট failover pool (৪,০০০ মিনিট)
+
+Work Log:
+- যাচাই-স্ক্রিপ্ট: /home/z/.audit/minutes_and_fork_verify.py + ব্রাঞ্চ-পেজিনেশন প্রোব (শূন্য-মিউটেশন)
+- **অ্যাকাউন্ট-ধরন**: /users API → paykaribazaronline type=**User**, SaifulHaqueNiloy type=**User** — প্রস্তাবের "Organization Account" দাবি ভুল; তবে ২,০০০+২,০০০=৪,০০০ গণিত ঠিকই দাঁড়ায় (আলাদা user অ্যাকাউন্ট = আলাদা private-রিপো Actions-পুল)
+- **Fork-দাবি যাচাই**: parent size=41,162KB, fork=42,068KB → **delta=906KB** ("~৯০০KB" দাবি প্রমাণিত); fork.parent=SaifulHaqueNiloy/supremeai (1:1 fork ✓); ব্রাঞ্চ parent=**4**, fork=**124** → অতিরিক্ত ১২০ ব্রাঞ্চ (দাবির "৩০+" সংখ্যাটা কম-বলা, দিক ঠিক) — delta-র উৎস = আমাদের ২৫ federation-commit + ১২০ test-branch ইতিহাস
+- **মিনিট-ঝুঁকি ইনভেন্টরি (fork, ১৯ active workflow)**: scheduled runs/day ≈ **৩৯** — Continuous Agent Loop ২৪ + Nightly Ops ৯ + Auto-Sync ৪ + Issue Ops ১ + Code Quality ১; **সব runs-on ubuntu** (windows/macos শূন্য → OS-মাল্টিপ্লায়ার আমাদের ক্ষেত্রে অপ্রাসঙ্গিক)
+- **কোয়ান্টিটেটিভ সতর্কতা (নতুন)**: fork private হলে (open-core v4) বর্তমান সময়সূচি-ই ~১,১৭০ run/মাস; গড় ২–৫ মিনি/রান ধরলে **২,৩০০–৫,৮০০ মিনি/মাস → একা একটি ২,০০০-পুল ডুবিয়ে দেবে** — প্রস্তাবে অ-উল্লিখিত লুকানো মূল্য
+- supremeai-open প্রোব: LICENSE + README + api-schemas/ + docs/ + examples/ (public-ফেস হিসেবে প্রস্তুত); infrastructure scripts/ci-তে federation_contracts_check.py + deploy-preflight সেট
+- **টপোলজি-সাংঘর্ষ চিহ্নিত**: প্রস্তাবের লোড-স্প্লিটিং (parent=PR-CI, fork=heavy-E2E) = দুই-লাইভ-মেইন পুনরুৎপাদন — ADR-003 freeze + ADR-005 single-live-main-এর বিরুদ্ধে; parent-এর পুল failover-টার্গেট নয় (Phase C-তে Actions-off-ই)
+- লিভার-বিশ্লেষণ: v3 (fork public) = Actions আনলিমিটেড-ফ্রি → প্রশ্নই মিলিয়ে যায়; v4 (fork private — detach-পরবর্তী PAT admin=True/maintain=True প্রমাণিত, API-call-এই ফ্লিপ) = সময়সূচি-ডায়েট (Agent Loop ২৪→৪, Nightly ৯→১) + supremeai-open প্রজেকশন (PR#5 byte-parity অবকাঠামো) + gitleaks-গেট; self-hosted runner = private-রিপোতেই নিরাপদ (public-এ সাপ্লাই-চেইন-ঝুঁকি)
+
+Stage Summary:
+- রায়: প্রস্তাব-১ (Open-Core কৌশল ১) দিক-ঠিক কিন্তু ৪ তথ্য-ভুল (org-দাবি, রিপো-গণনা, core=freeze-empty placeholder, কাজ-প্রথম-অ্যাকাউন্টে-রাখা); প্রস্তাব-২ (৪,০০০-মিনিট) গণিত-ঠিক কিন্তু ডিজাইন আমাদের টপোলজি-বিরোধী
+- পরামর্শ: cutover ৩-ক্লিক অপরিবর্তিত; fork public/private সিদ্ধান্ত ফ্লিপ-পরেও বিপরীতযোগ্য (উভয় দিক API-সম্ভব) → v3-ডিফল্টে এগিয়ে open-core চাইলে v4-ফ্লিপ + ডায়েট + প্রজেকশন-sync একই সেশনে
