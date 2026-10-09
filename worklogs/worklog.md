@@ -1044,3 +1044,26 @@ Stage Summary:
 - **v4 সিদ্ধান্ত চূড়ান্তভাবে নথিভুক্ত** (ADR-007 Accepted); cutover-পরের Phase E সম্পূর্ণ প্রস্তুত — প্রস্তুতি-আর্টিফ্যাক্ট archive-এ স্থায়ী (sandbox-reset-প্রতিরোধী)
 - কাটওভারের জন্য বাকি: ৪ মানব-ক্লিক (parent-flip, App-install, Render re-point, key-rotation) — ক্লিক-পরেই এক সেশনে Phase B/C/E + ADR-status=Executed
 - শূন্য-সিক্রেট শৃঙ্খলা অটুট; worklog+archive push সম্পন্ন
+
+---
+Task ID: 40
+Agent: Z.ai Code (main session)
+Task: ব্যবহারকারীর প্রশ্ন: "check our full project from root + analyse ki kaj baki + agents.md follow kore any agents akhon kaj korte parbe?" — cutover-পরবর্তী পূর্ণাঙ্গ শুধু-পড়া নিরীক্ষা
+
+Work Log:
+- L-003 প্রস্তুতি-যাচাই: PAT/App-token/askpass জীবিত (PAT /user=200); /tmp/inf.env গেলেও mint_token.py-র ইনলাইন Infisical-ক্রেড vault-প্রবেশ দেয় (219→217 prod secret, সব মূল key উপস্থিত)
+- **CUTOVER প্রমাণিত-সম্পন্ন (আজ ২০২৬-১০-০৯)**: ① parent SaifulHaqueNiloy/supremeai → **private=True** (App-token 200-প্রমাণ; PAT-pay 404 = অ্যাক্সেস-বিচ্ছিন্ন) ② fork paykaribazaronline/supremeai → **private=True + parent=শূন্য = DETACHED** (সম্পূর্ণ স্বাধীন লাইভ main) ③ পুরনো SaifulHaqueNiloy/supremeai-archive 404 (মুছে/সরানো); নতুন **paykaribazaronline/supremeai-archive** সৃষ্টি (private, ADR-001…007 সহ, sync_archive.sh ইতিমধ্যেই ১০:০১–১০:১৩Z-এ ৩ worklog-push করেছে)
+- **CI-bot parent-এ ২ commit দিয়েছে**: 443baf2d (১২:০৭Z) = **ADR-007 schedule-diet প্রয়োগ** — Agent Loop `0 2,8,14,20` (২৪→৪/দিন), nightly `0 */4` আর্ম কমেন্ট-আউট (৯→~১/দিন), + credential_bootstrap/credential_manager এনকোডিং-ফিক্স + check_render_status.py; 3a595afe (১২:২২Z) = সংবিধান Section 2.1 (Autonomous Work Submission)
+- **Parent-এ Agent Loop ১২:২২-এ SUCCESS** (diet+fix-পরে) — অর্থাৎ ফিক্সটি parent-এ কাজ করছে
+- **সমালোচনামূলক ফাঁক**: diet-commit parent-এ, কিন্তু লাইভ main (fork) এখনও পুরনো hourly cron (fork main tip f0c2abb0 = গতকাল) — fork private → ~৩৯ run/দিন এখনও paykaribazaronline-এর ২০০০-পুল পুড়াচ্ছে; fork detached → auto-sync (SYNC_PAT, ৬ঘণ্টা) আর parent-merge পাবে না + **vault-এ SYNC_PAT=শূন্য (len 0)** → auto-sync স্থায়ীভাবে মৃত, প্রতি ৬ঘণ্টায় ব্যর্থ-নয়েজ হবে
+- Render tower deploy-উৎস **এখনও SaifulHaqueNiloy/supremeai@main** (re-point হয়নি; parent private → পরবর্তী deploy-চেষ্টা ভঙ্গুর); RENDER_API_KEY_4 দিয়ে শুধু tower দৃশ্যমান (ফ্লিট-অন্যান্য সার্ভিস এই key-স্কোপে নেই)
+- Tower: /health 200 কিন্তু services {total:0} (প্রোভাইডার-রেজিস্ট্রি খালি — নতুন সমস্যা); **MCP handshake z-ai-longrun টোকেনে 200 ✓** (persistent agent identity টিকে আছে); agent_status → ১০ স্লট (৭ autonomous সব expired=দাবিযোগ্য, ৩ interactive অনলাইন), onlineAutonomous=0
+- **AGENTS.md-বুটস্ট্র্যাপ-যাচাই (fork main লাইভ main)**: Step-1 git ✓; Step-2 MCP tower ✓ (হ্যান্ডশেক+status প্রমাণিত); Step-3 task-queue ✓ (১৩ খোলা issue: P0 #20 in-progress+PR #1, P1 #34/#26, P2 #25/#24/#23) + continuous_agent_loop.py/issue_queue_manager.py(scripts/ci)/atomic_claim.sh/role_registry.py/credential_manager.py/mcp_tower_client.py/next_claimable.sh/heartbeat_ping.py সব ✓; Step-4 ✗ **Actions "Continuous Agent Loop" লাল** (job "Run continuous agent loop" ব্যর্থ — parent-এর ফিক্স এখনো fork-এ আসেনি)
+- **v2 সংবিধান আবিষ্কার**: supremeai-open-এ আজ ১২:২৪Z নতুন AGENTS.md (৯,৬৭৬B) + AGENT_RULES.md (১৯,৮২৮B) পুশ — ৮-ধাপ লুপ, U1–U8, #4177 fresh-board নিয়ম; তবে এর উল্লিখিত `continue_loop.py` **যেকোনো repo-তে অস্তিত্বহীন** (v2 সম্ভাবনাময়-ডকুমেন্ট); fork main-এ পুরনো v1 বাংলা সংবিধান (৭,৪৯৮B) — সংস্করণ-বিভাজন রেকর্ড করা হলো
+- fork secrets ৩১টি অক্ষত (flip-পরে); fork-এর issue-ট্র্যাকার নিজস্ব নম্বরিং (#4-#34), parent-এর আলাদা (#2933-#4292) — দুই কিউ সমান্তরালে চলছে
+
+Stage Summary:
+- **রায়: cutover কার্যত EXECUTED** — parent=private-archive ✓, fork=detached+private-live ✓, নতুন archive ✓, supremeai-open=public-face ✓; শেষ ২ মানব-ক্লিক অযাচাইকৃত (App-install pay-অ্যাকাউন্টে, key-rotation)
+- **বাকি কাজ (অগ্রাধিকার-ক্রমে)**: P0=① diet-commit 443baf2d fork main-এ পোর্ট (মিনিট-রক্ষা — জরুরি) ② fork-এ auto-sync disable ③ archive-mirror স্থাপন (fork→parent/pay-archive, SELF_HEAL_PAT+[skip ci]) ④ Agent Loop-লাল ফিক্স (parent-এর প্রমাণিত ফিক্স ইতিমধ্যে হাতে) ⑤ parent Actions off (Phase C) ⑥ Render re-point (মানব-ক্লিক); P1=projection-sync workflow, gitleaks full-history, tower services=0 তদন্ত, App-install/rotation যাচাই; P2=continue_loop.py নির্মাণ+সংবিধান-v2 sync, P0 #20+PR #1, P1 #34/#26
+- **AGENTS.md-প্রশ্নের উত্তর: হ্যাঁ — এজেন্টরা এখনই কাজ করতে পারে** (v1 সংবিধানের বুটস্ট্র্যাপ-চেইন ৪ ধাপের ৩টি প্রমাণিত-জীবন্ত, টুলিং ৯/১১+ci-path-সহ সম্পূর্ণ, ভল্ট ২১৭-secret, টাওয়ার-অথেনটিকেশন ২০০, স্লট ৭টি ফাঁকা, কিউ ১৩-issue); একমাত্র ভাঙা অংশ = Actions-সিডিউলড স্বয়ংক্রিয় লুপ (লাল) — ম্যানুয়াল/লোকাল লুপ সম্পূর্ণ কার্যকর; স্থায়ী-স্বয়ংক্রিয়তার জন্য diet-পোর্ট+লুপ-ফিক্স দরকার
+- শূন্য-মিউটেশন নিরীক্ষা; শূন্য-সিক্রেট-প্রিন্ট; স্ক্রিপ্ট: /home/z/.audit/task40_full_project_check.py + task40_deep_probes.py
