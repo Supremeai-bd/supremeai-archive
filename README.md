@@ -25,6 +25,8 @@ worklogs/           # কাজের খাতা — sandbox worklog.md-এর
 adrs/               # Architecture Decision Records — এক সিদ্ধান্ত = এক ফাইল
 roadmap-snapshots/  # নির্দিষ্ট সময়ের roadmap প্রতিলিপি (fork commit-sha সহ)
 lessons/            # distilled lessons — কী ভুল, কী শিখলাম, কীভাবে বাঁচব
+legacy-specs/       # মূল রিপো থেকে স্থানান্তরিত ঐতিহাসিক মাস্টার স্পেক্স ও প্ল্যান
+tarballs/           # ঐতিহাসিক ডকুমেন্টের সংকুচিত ব্যাকআপ (.tar.gz)
 ```
 
 ## নিয়ম (Conventions)
