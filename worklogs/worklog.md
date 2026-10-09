@@ -971,3 +971,25 @@ Stage Summary:
 - নতুন শৃঙ্খলা-শিক্ষা (L-012 প্রার্থী): parent main-এ এজেন্ট-কাজ = Atomic Claim → template-compliant issue → `<lane>-<issue>-<slug>` ব্রাঞ্চ → claim-কমেন্টে `Touching files:` → PR → গেট-সবুজ → merge; শর্টকাট কোনোটাই সম্ভব নয় (guard-প্রমাণিত)
 - Render API-key ঘূর্ণন-প্যাটার্ন লক্ষ: vault-এর RENDER_API_KEY_4 সক্রিয় ঘূর্ণনের শিকার — প্রতি-ব্যবহারে fresh vault-pull দরকার (logs-API-র সঠিক প্যারাম: ownerId+resource+type=app)
 - বাকি: fork-এ auto-sync-এর মাধ্যমে এই কমিট ছড়াবে (≤৬ঘণ্টা); Phase A-flip (মানব-UI) পেন্ডিং থাকলেও tower এখন থেকেই paykaribazaronline-ফেডারেশন পর্যবেক্ষণ-সক্ষম
+
+---
+Task ID: 36
+Agent: Z.ai Code (main session)
+Task: ব্যবহারকারীর প্রশ্ন: "check our both github account and explain can we move to second account (paykarobazaronline) now" — দুই অ্যাকাউন্টের পূর্ণ শুধু-পড়া নিরীক্ষা + cutover go/no-go রায়
+
+Work Log:
+- Sandbox-reset পুনরুদ্ধার (L-003): mint_token.py → App-token (expires 2026-10-09T10:40Z); vault থেকে GITHUB_PAT_PAYKARIBAZARONLINE (len 93) → /tmp/pay_pat; PAT যাচাই → login=paykaribazaronline
+- নিরীক্ষা-স্ক্রিপ্ট: /home/z/.audit/dual_account_audit.py + followup_probes.py + final_probes.py (শূন্য-মিউটেশন, শূন্য-সিক্রেট-প্রিন্ট)
+- **Parent (SaifulHaqueNiloy/supremeai)**: public, tip 3f3edcd0 (2026-10-08T20:50Z), open_issues=9, active workflow 20/21; শেষ PushEvent = ব্যবহারকারী নিজে (main, 2026-10-08)
+- **Fork (paykaribazaronline/supremeai)**: tip f0c2abb0; compare parent...fork = parent-behind **0**, fork-extra **+25** → fork parent-এর অতিসেট (Phase 0 অটুট); Actions secret **৩১টি** অক্ষত (তালিকা যাচাইকৃত); auto-sync (৩৭৫৯৭৭৮৮২) সক্রিয়, শেষ run সবুজ (06:10Z)
+- **নতুন আবিষ্কার-১**: PAY-PAT-এর parent-অধিকার এখন **push=True** (paykaribazaronline প্যারেন্টে collaborator — Task 34-এর git-push 403-এর পর ব্যবহারকারী যোগ করেছেন) → archive-mirror (fork→parent) credential-গ্যাপ বন্ধ
+- **নতুন আবিষ্কার-২**: GitHub App (supremeai-3rd-party-platform) installation মাত্র **১টি** — SaifulHaqueNiloy, scope=শুধু parent, contents:write; paykaribazaronline-অ্যাকাউন্টে installation **নেই**
+- **নতুন আবিষ্কার-৩**: Continuous Agent Loop fork-এ failure (08:46Z) — কিন্তু parent-এও failure (3f3edcd0, 08:31Z) → fork-পরিবেশ-সমস্যা নয়, উত্তরাধিকারী লাল (workflow: INFISICAL_*+SELF_HEAL_PAT নেয় — fork-এ সব secret উপস্থিত); "Run continuous agent loop" step-এ ব্যর্থ
+- Render tower প্রোব: deploy-উৎস এখনও **SaifulHaqueNiloy/supremeai main** (autoDeploy=yes) — প্রোডাকশন এখনও প্রথম অ্যাকাউন্ট থেকেই
+- Archive রিপো জীবিত (private, pushed 2026-10-08); paykaribazaronline-এ supremeai-রিপো ৯টি (fork+open public, ৭ private)
+
+Stage Summary:
+- **রায়: GO — কাঠামোগতভাবে আজই সম্ভব**; fork = parent-এর অতিসেট + ৩১-secret + archive প্রস্তুত + tower ১০/১০; auto-sync ফ্লিপ-মুহূর্ত পর্যন্ত নিরাপত্তা-জাল
+- **৩টি মানব-ক্লিক বাকি** (কোনো token-এ সাধ্য নেই): ①parent-flip private (Settings→Danger Zone) ②GitHub App দ্বিতীয় অ্যাকাউন্টে install ③Render GitHub App-কে paykaribazaronline/supremeai-অ্যাক্সেস + সার্ভিস-উৎস re-point
+- ক্লিক-পরবর্তী আমার স্বয়ংক্রিয়-অংশ (Phase B/C): auto-sync disable → archive-mirror.yml (SELF_HEAL_PAT, [skip ci]) → parent-Actions off → চূড়ান্ত secret-অডিট → ADR-005 status=Executed
+- পরবর্তী-সংশোধনী তালিকা: Continuous Agent Loop লাল (উভয় অ্যাকাউন্টে, উত্তরাধিকারী)
