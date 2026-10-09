@@ -3,13 +3,14 @@
 > **একমাত্র উদ্দেশ্য:** গুরুত্বপূর্ণ পরিকল্পনা, সিদ্ধান্ত ও কাজের ইতিহাস কখনো হারাবে না।
 > Purpose: append-only ledger of worklogs, decisions (ADR), roadmap snapshots and lessons for the SupremeAI federation.
 
-## বর্তমান অবস্থা (Status banner — v3, ADR-005)
+## বর্তমান অবস্থা (Status banner — v4-decided, ADR-005+ADR-007)
 
-- **লাইভ main = fork `paykaribazaronline/supremeai`** (public) — এখানেই চলমান জীবন; "olpo correction → full live" লক্ষ্যের একমাত্র ঠিকানা।
-- **`SaifulHaqueNiloy/supremeai` = প্রাইভেট আর্কাইভ-মিরর** (ADR-005: public→private রূপান্তর pending explicit go) — full project-এর সাথে synced, receive-only।
-- **`paykaribazaronline` = public-private combination** — PUBLIC: supremeai(fork), supremeai-open, paykaribazar; PRIVATE: api, archive, core, infrastructure, mcp-control-plane, sdk, studio।
-- **Secrets pre-configured** — fork-এ healed ৭-secret বেস (Infisical+Supabase+SYNC_PAT); নতুন secret-প্রয়োজন ন্যূনতম (SYNC_PAT-ই mirror-push সামলাবে)।
-- Sync-দিক (cutover-পরে): fork → parent (daily merge-mirror, `[skip ci]`); parent-এ Actions disable।
+- **লাইভ main = fork `paykaribazaronline/supremeai`** — cutover-পরে **PRIVATE** হবে (v4: Open-Core, ব্যবহারকারীর চূড়ান্ত সিদ্ধান্ত 2026-10-09)।
+- **`SaifulHaqueNiloy/supremeai` = প্রাইভেট আর্কাইভ-মিরর** (ADR-005; flip = একমাত্র মানব-ক্লিক) — receive-only, `[skip ci]` mirror।
+- **Public-ফেস = `supremeai-open`** — উৎস-রিপো থেকে projection-sync (gitleaks fail-closed গেট; generated-repo নীতি — সরাসরি মানব-push নয়)।
+- **মিনিট-বাজেট (v4):** schedule-diet → ৩৯→≈৭ run/day ≈ ৪২০–৬৩০ মিনি/মাস (২,০০০-পুলে >১,৩০০ উদ্বৃত্ত)।
+- **প্রস্তুতি-আর্টিফ্যাক্ট:** `prepared/v4/` (schedule-diet-patch + open-projection.yml) — cutover-সেশনে সরাসরি প্রয়োগ।
+- cutover অবরুদ্ধ ৪ মানব-ক্লিকে: ①parent-flip ②GitHub App দ্বিতীয় অ্যাকাউন্টে ③Render re-point ④key-rotation (vault-এ নতুন মান)।
 
 ## কেন এই রিপো (Why)
 

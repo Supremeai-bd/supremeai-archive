@@ -1027,3 +1027,20 @@ Work Log:
 Stage Summary:
 - নিরাপত্তা-রায়: pasted পরামর্শের ৩ ঝুঁকির ২টি প্রমাণে শূন্য/অতি-নিম্ন; বাকি একটির সমাধান = বিদ্যমান rotation-তালিকা + gitleaks-গেট — নতুন ব্লকার কিছুই আবিষ্কৃত হয়নি
 - Full-plan চূড়ান্ত: ৪ মানব-ক্লিক + ১ সিদ্ধান্ত-শব্দ (v3/v4) → বাকি সব এজেন্ট-অটোমেশন; cutover-এ প্রস্তুত
+
+---
+Task ID: 39
+Agent: Z.ai Code (main session)
+Task: ব্যবহারকারীর চূড়ান্ত সিদ্ধান্ত "আমরা v4 বেছে নিচ্ছি" — ADR-007 লেখা + v4-প্রস্তুতি-আর্টিফ্যাক্ট + tower-continuity যাচাই
+
+Work Log:
+- **Tower-continuity প্রোব**: parent main-এর account.registry.ts পড়া — ৩০ অ্যাকাউন্ট, `github-test-ground` = paykaribazaronline/supremeai + GITHUB_PAT_PAYKARIBAZARONLINE দিয়ে ইতিমধ্যে কনফিগারড (Task 35) → cutover-পরে registry-পরিবর্তন শূন্য; forwarded-রিমাইন্ডারের উদ্বেগ আগেই-সমাধাত
+- **ADR-007 লেখা** (archive/adrs/): টপোলজি v4 Open-Core Private-Live — Context (৬-প্রমাণ), Decision (৬-বিন্দু: fork→private API-flip, schedule-diet, projection-sync, generated-repo নীতি, fallback), Consequences, **Phase E runbook** (৬-ধাপ)
+- **prepared/v4/schedule-diet-patch.md**: হুবহু cron-পরিবর্তন — continuous-agent-loop.yml `0 * * * *`→`0 2,8,14,20 * * *` (২৪→৪); Nightly Ops ৯→১ (একক `30 1 * * *` + dispatch-পথ খোলা); স্পর্ষ-নিষিদ্ধ-তালিকা; প্রত্যাশিত ৩৯→≈৭ run/day ≈ ৪২০–৬৩০ মিনি/মাস
+- **prepared/v4/open-projection.yml**: সম্পূর্ণ workflow — PROJECTION_MAP-চালিত path-নির্বাচন → gitleaks fail-closed (v8.24.0, --no-git --redact --exit-code 1) → diff-মোড (workflow_dispatch dry_run=true ডিফল্ট) → App-installation-token self-mint (vault AGENT_PLATFORM_*, paykaribazaronline installation) → push [skip ci]; ব্যর্থতায় warning-notify
+- **README status banner v3→v4-decided** — নতুন স্থিতি, মিনিট-বাজেট, আর্টিফ্যাক্ট-পয়েন্টার, ৪-ক্লিক তালিকা
+
+Stage Summary:
+- **v4 সিদ্ধান্ত চূড়ান্তভাবে নথিভুক্ত** (ADR-007 Accepted); cutover-পরের Phase E সম্পূর্ণ প্রস্তুত — প্রস্তুতি-আর্টিফ্যাক্ট archive-এ স্থায়ী (sandbox-reset-প্রতিরোধী)
+- কাটওভারের জন্য বাকি: ৪ মানব-ক্লিক (parent-flip, App-install, Render re-point, key-rotation) — ক্লিক-পরেই এক সেশনে Phase B/C/E + ADR-status=Executed
+- শূন্য-সিক্রেট শৃঙ্খলা অটুট; worklog+archive push সম্পন্ন
