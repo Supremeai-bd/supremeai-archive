@@ -1012,3 +1012,18 @@ Work Log:
 Stage Summary:
 - রায়: প্রস্তাব-১ (Open-Core কৌশল ১) দিক-ঠিক কিন্তু ৪ তথ্য-ভুল (org-দাবি, রিপো-গণনা, core=freeze-empty placeholder, কাজ-প্রথম-অ্যাকাউন্টে-রাখা); প্রস্তাব-২ (৪,০০০-মিনিট) গণিত-ঠিক কিন্তু ডিজাইন আমাদের টপোলজি-বিরোধী
 - পরামর্শ: cutover ৩-ক্লিক অপরিবর্তিত; fork public/private সিদ্ধান্ত ফ্লিপ-পরেও বিপরীতযোগ্য (উভয় দিক API-সম্ভব) → v3-ডিফল্টে এগিয়ে open-core চাইলে v4-ফ্লিপ + ডায়েট + প্রজেকশন-sync একই সেশনে
+
+---
+Task ID: 38
+Agent: Z.ai Code (main session)
+Task: ব্যবহারকারীর প্রশ্ন "full plan ki ki korte hobe?" — pasted নিরাপত্তা-পরামর্শের যাচাই + পূর্ণাঙ্গ cutover-পরিকল্পনা সংকলন
+
+Work Log:
+- pasted-দাবি যাচাই (প্রোব-স্ক্রিপ্ট, শূন্য-মিউটেশন): fork.forks_count=**0** ✓, watchers=0, stars=0 → তৃতীয়-পক্ষ-উপস্থিতি শূন্য; parent.forks_count=1 (শুধু আমাদের fork)
+- **sourcemap-দাবি যাচাই**: গাছ-স্ক্যানে মাত্র ২ build-config; frontend/vite.config.ts:209 → **sourcemap: false** (প্রমাণিত — ঝুঁকি ইতিমধ্যে নির্মূল); apps/mission-control/next.config.ts-এ sourcemap-সেটিং নেই (Next prod-ডিফল্ট = public নয়)
+- pasted-পরামর্শের ৩-ঝুঁকি-রায়: (ক) অতীত-ক্লোন = অতি-নিম্ন সম্ভাবনা (forks/watchers/stars সব ০) (খ) হিস্ট্রি-সিক্রেট = একমাত্র বাস্তব ঝুঁকি → প্রতিষ্ঠিত রোটেশন-তালিকার সাথে যুক্ত (OpenAI/Groq/Cerebras/Google ইতোমধ্যে vault-doctor #1377-91-এ pending) + cutover-সেশনে gitleaks full-history scan (চূড়ান্ত-প্রমাণ) (গ) sourcemap = প্রমাণিত-শূন্য
+- পূর্ণাঙ্গ পরিকল্পনা ৩-স্তরে সংকলিত: স্তর ১ মানব-ক্লিক (parent-flip, App-install-২য়-অ্যাকাউন্টে, Render re-point, key-rotation) → স্তর ২ এজেন্ট-অটোমেশন (Phase B/C, archive-mirror, gitleaks, v4-ঐচ্ছিক-ব্লক, Agent Loop ফিক্স, ADR-সমাপ্তি) → স্তর ৩ লাইভ-শেষ (consumer-key 200-path, register #23–26)
+
+Stage Summary:
+- নিরাপত্তা-রায়: pasted পরামর্শের ৩ ঝুঁকির ২টি প্রমাণে শূন্য/অতি-নিম্ন; বাকি একটির সমাধান = বিদ্যমান rotation-তালিকা + gitleaks-গেট — নতুন ব্লকার কিছুই আবিষ্কৃত হয়নি
+- Full-plan চূড়ান্ত: ৪ মানব-ক্লিক + ১ সিদ্ধান্ত-শব্দ (v3/v4) → বাকি সব এজেন্ট-অটোমেশন; cutover-এ প্রস্তুত
