@@ -1,5 +1,14 @@
 # Seq 453 — Live Telemetry Probe & Timestamp-Parity Contract Hand-off (#453, r1)
 
+> **ghost-host-retired: #2355/#2365/#2377** — this historical receipt's §1
+> "Measured evidence" records the probe against the retired no-server ghost
+> `supremeai-api.onrender.com` as measured at r1 build (2026-10-17); that
+> surface is now a plain-404 alias. The live gateway SSOT is
+> `https://supremeai-api-ulw0.onrender.com` (README service table,
+> `docs/CONSUMERS.md`); `probe_live_status_453.py` defaults to it since
+> #2365. Do NOT re-probe the ghost — `scripts/ci/ghost_host_guard.py`
+> enforces this class.
+
 > Task: `bridge-20261017-live-telemetry-probe-453` · Issue: #453 (enhancement,
 > repo:open; **claim state at build time: PENDING** — this order is submitted
 > only after the operator sets `status:claimed` / an `<!-- atomic-claim -->`
@@ -80,7 +89,7 @@ jobs:
       - name: Probe live gateway (issue #453)
         id: probe
         env:
-          GATEWAY_URL: ${{ vars.GATEWAY_URL || 'https://supremeai-api.onrender.com' }}
+          GATEWAY_URL: ${{ vars.GATEWAY_URL || 'https://supremeai-api-ulw0.onrender.com' }}
           CORS_ORIGINS: ${{ vars.STUDIO_CORS_ORIGINS }}
         run: |
           set +e
@@ -138,7 +147,11 @@ Usage:
 python3 scripts/ci/probe_live_status_453.py --selftest
 
 # live probe — telemetry, not a test: exit 1 while the gateway is down is CORRECT
-GATEWAY_URL=https://supremeai-api.onrender.com \
+# NOTE (issue #2355): always probe the deployed SUFFIXED service URL
+# (supremeai-api-ulw0.onrender.com). Bare Render names are NOT service URLs:
+# they 404 at the router with x-render-routing: no-server (fast, 0.2s) —
+# check that header before declaring a gateway blackout.
+GATEWAY_URL=https://supremeai-api-ulw0.onrender.com \
   python3 scripts/ci/probe_live_status_453.py --json-out probe-report.json
 ```
 
