@@ -1,0 +1,42 @@
+#!/bin/sh
+# SupremeAI Frontend pre-commit hook — local mirror of the CI verify job.
+#
+# Runs the same checks CI runs (prettier + tsc) so a commit cannot break a
+# fresh environment with failures that were visible locally.
+#
+# Enable once per clone:
+#   git config core.hooksPath .githooks
+#
+# Emergency bypass:  git commit --no-verify
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+if [ ! -d node_modules ]; then
+  echo "pre-commit: node_modules missing — run 'npm ci' first" >&2
+  exit 1
+fi
+
+echo "pre-commit: tsc --noEmit"
+npx tsc --noEmit
+
+echo "pre-commit: prettier --check (changed files)"
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+PRETTIER_TARGETS=""
+for f in $STAGED; do
+  case "$f" in
+    *.ts|*.tsx|*.js|*.jsx|*.json|*.md|*.css|*.html|*.yml|*.yaml)
+      PRETTIER_TARGETS="$PRETTIER_TARGETS $f"
+      ;;
+  esac
+done
+
+if [ -n "$PRETTIER_TARGETS" ]; then
+  # shellcheck disable=SC2086 -- intentional word splitting
+  npx prettier --check $PRETTIER_TARGETS
+else
+  echo "skip: no prettier-supported files staged"
+fi
+
+echo "pre-commit: ok"

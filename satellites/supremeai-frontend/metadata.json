@@ -1,0 +1,5 @@
+{
+  "name": "SupremeAI Studio",
+  "description": "Bilingual AI workspace console for the SupremeAI platform — chat, live voice, project workspace, admin control centre and real-data sync fabric.",
+  "requestFramePermissions": ["microphone", "camera"]
+}

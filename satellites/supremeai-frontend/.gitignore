@@ -1,0 +1,13 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+.supremeai-totp-vault.json
+.studio-data/
+
+playwright-report
+test-results

@@ -1,0 +1,70 @@
+name: Deploy SupremeAI Studio to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Secrets are promoted to job-level env so step-level `if:` conditions can
+    # read them (a step's own env is not available to its `if:`).
+    env:
+      CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+
+      - name: Install dependencies (reproducible)
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build production bundle
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY || vars.VITE_FIREBASE_API_KEY || '' }}
+          VITE_FIREBASE_PROJECT_ID: ${{ vars.VITE_FIREBASE_PROJECT_ID || 'supremeai-a' }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.VITE_FIREBASE_AUTH_DOMAIN || 'supremeai-a.firebaseapp.com' }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ vars.VITE_FIREBASE_STORAGE_BUCKET || 'supremeai-a.firebasestorage.app' }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ vars.VITE_FIREBASE_MESSAGING_SENDER_ID || '565236080752' }}
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        if: env.CF_API_TOKEN != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ env.CF_API_TOKEN }}
+        run: |
+          npx wrangler pages deploy dist --project-name=supremeai-studio --branch=main
+          echo "- **Deployed:** $(date -u +%Y-%m-%dT%H:%M:%SZ) · commit \`$GITHUB_SHA\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Skip notice when deployment secrets are missing
+        if: env.CF_API_TOKEN == ''
+        run: |
+          echo "::warning::CLOUDFLARE_API_TOKEN is not configured — build verified but nothing was deployed."
+          echo "### Deployment skipped" >> "$GITHUB_STEP_SUMMARY"
+          echo "Cloudflare credentials are not configured for this repository." >> "$GITHUB_STEP_SUMMARY"

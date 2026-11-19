@@ -1,0 +1,10 @@
+dist
+coverage
+node_modules
+package-lock.json
+playwright-report
+test-results
+src/locales
+scripts/i18n-baseline.json
+scripts/http-baseline.json
+scripts/any-baseline.json

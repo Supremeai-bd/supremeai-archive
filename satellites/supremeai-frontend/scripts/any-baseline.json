@@ -1,0 +1,24 @@
+{
+  "updatedAt": "2026-11-18",
+  "total": 52,
+  "perFile": {
+    "src/components/admin/AdminArchitectureTopologyView.tsx": 4,
+    "src/components/admin/AdminCustomersView.tsx": 3,
+    "src/components/admin/AdminOverviewView.tsx": 2,
+    "src/server/controlPlaneRouter.ts": 3,
+    "src/server/mcpHealthCollector.ts": 5,
+    "src/services/adminService.ts": 6,
+    "src/services/authService.ts": 10,
+    "src/services/chatService.ts": 1,
+    "src/services/gmailOAuthService.ts": 1,
+    "src/services/mockDataSyncService.ts": 4,
+    "src/services/projectService.ts": 1,
+    "src/services/shareService.ts": 1,
+    "src/services/userPreferencesHydrator.ts": 1,
+    "src/services/webhookService.ts": 1,
+    "src/stores/useAuthStore.ts": 1,
+    "src/stores/useControlCenterStore.ts": 6,
+    "src/stores/usePlatformStore.ts": 1,
+    "src/utils/clientFaceDetection.ts": 1
+  }
+}
