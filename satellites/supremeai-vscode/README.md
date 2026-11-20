@@ -1,30 +1,61 @@
-# SupremeAI Unified Client Hub (`supremeai-vscode`)
+# SupremeAI VS Code Extension
 
-Native client applications and developer workflows for SupremeAI.  
-Per [`ARCHITECTURE_PLAN.md`](https://github.com/Supremeai-bd/supremeai-open/blob/main/ARCHITECTURE_PLAN.md), this repository hosts all non-cloud client applications:
+Developer workflow bridge and live federation runway telemetry for **SupremeAI** autonomous agents.
 
-| Subdirectory | Target Platform | Release Channel |
-|---|---|---|
-| **[`/extension`](https://github.com/Supremeai-bd/supremeai-vscode/tree/main/extension)** | VS Code Extension (`.vsix`) | VS Code Marketplace / GitHub Releases |
-| **[`/desktop`](https://github.com/Supremeai-bd/supremeai-vscode/tree/main/desktop)** | Windows / macOS / Linux Desktop App | GitHub Releases (`.exe`, `.dmg`, `.AppImage`) |
-| **[`/mobile`](https://github.com/Supremeai-bd/supremeai-vscode/tree/main/mobile)** | Android & iOS Supervisor App | Google Play Store / Apple App Store |
-
-> Satellite sovereignty (#4934): the `extension/`, `desktop/`, and `mobile/`
-> sources live in the sovereign [`supremeai-vscode`](https://github.com/Supremeai-bd/supremeai-vscode)
-> satellite repository; this hub keeps release docs and the root sentinel
-> anchor (`package.json`) for zero-drift parity verification.
+[![VS Code Extension Release](https://github.com/Supremeai-bd/supremeai-vscode/actions/workflows/vscode-release.yml/badge.svg)](https://github.com/Supremeai-bd/supremeai-vscode/actions/workflows/vscode-release.yml)
+[![Latest Release](https://img.shields.io/github/v/release/Supremeai-bd/supremeai-vscode)](https://github.com/Supremeai-bd/supremeai-vscode/releases)
 
 ---
 
-## 🛠️ Quick Start
+## 🌟 Key Features
+
+- **Federation Runway Telemetry**:
+  - Live status bar indicator showing active autonomous agents, pending PR runway, and CI gate health.
+- **Autonomous Task Dispatcher**:
+  - Dispatch tasks directly from your active editor file to the SupremeAI federation agent bus.
+- **Inline Code Actions & Assistance**:
+  - Quick action menu to ask SupremeAI questions about highlighted code, request refactoring, or generate tests.
+- **MCP Bridge Integration**:
+  - Seamless Model Context Protocol (MCP) tool discovery and command execution in VS Code.
+- **Emergency Autonomy Kill-Switch**:
+  - One-click emergency stop command to halt runaway tasks across all federated agents.
+
+---
+
+## 🛠️ Configuration
+
+Configure settings in `settings.json` or through the VS Code Settings UI (`supremeai.*`):
+
+| Setting | Default | Description |
+|---|---|---|
+| `supremeai.gatewayUrl` | `http://127.0.0.1:8080` | SupremeAI Gateway base URL |
+| `supremeai.apiKey` | `""` | X-SupremeAI-Key authentication token (or `SUPREMEAI_API_KEY` env) |
+| `supremeai.model` | `auto` | Default model tier (`auto`, `fast`, `balanced`, `pro`) |
+| `supremeai.pollCadenceSeconds` | `30` | Telemetry poll frequency in seconds |
+| `supremeai.enableNotifications` | `true` | Toast notifications on task completion or CI gate alert |
+
+---
+
+## 🚀 Development & Packaging
 
 ```bash
-# Install dependencies across all workspaces
+# Install dependencies
 npm install
 
-# Compile the VS Code extension
-npm run build:extension
+# Compile TypeScript to JavaScript
+npm run compile
 
-# Run extension tests
-npm run test
+# Run tests
+npm test
+
+# Package into a standalone .vsix installer
+npx @vscode/vsce package --no-git-tag-version
 ```
+
+---
+
+## 📦 Automated Release Pipeline
+
+GitHub Actions automatically builds and publishes `.vsix` releases:
+- **On Tag Push**: Push a tag matching `v*` (e.g., `v0.1.0`) to compile, test, package `.vsix`, and create a GitHub Release.
+- **Manual Trigger**: Go to **Actions** -> **SupremeAI VS Code Extension Build & Release** -> **Run workflow**.
